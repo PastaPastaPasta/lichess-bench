@@ -3,6 +3,8 @@
 import math
 from typing import Dict
 
+from scipy.stats import t as t_dist
+
 
 def expected_score(rating_a: float, rating_b: float) -> float:
     """Calculate expected score for player A against player B.
@@ -46,7 +48,11 @@ def update_elo(current: float, opponent: float, won: bool, games_played: int) ->
 
 
 def confidence_interval(games_played: int, confidence: float = 0.95) -> float:
-    """Calculate the +/- confidence interval for ELO rating.
+    """Calculate the +/- confidence interval for ELO rating using t-distribution.
+
+    Uses the t-distribution instead of z-scores for statistical correctness
+    at small sample sizes. The t-distribution converges to the normal
+    distribution as n approaches infinity, so this works for all sample sizes.
 
     Based on Elo's empirical finding that individual game performance
     has a standard deviation of ~200 rating points.
@@ -54,7 +60,8 @@ def confidence_interval(games_played: int, confidence: float = 0.95) -> float:
     The standard error of the mean rating decreases as sqrt(n):
     SE = 200 / sqrt(n)
 
-    For 95% CI: margin = 1.96 * SE
+    For t-distribution CI: margin = t(df, alpha/2) * SE
+    where df = n - 1 (degrees of freedom)
 
     Args:
         games_played: Number of games played
@@ -63,29 +70,53 @@ def confidence_interval(games_played: int, confidence: float = 0.95) -> float:
     Returns:
         Plus/minus margin for the confidence interval
     """
-    if games_played == 0:
+    if games_played <= 1:
+        # With 0 or 1 game, degrees of freedom is 0 or undefined
         return float('inf')
 
     performance_sd = 200.0  # Standard deviation of single game performance
     standard_error = performance_sd / math.sqrt(games_played)
 
-    # Z-scores for confidence levels
-    z_scores = {
-        0.90: 1.645,
-        0.95: 1.96,
-        0.99: 2.576
-    }
-    z = z_scores.get(confidence, 1.96)
+    # Degrees of freedom = n - 1
+    df = games_played - 1
 
-    return z * standard_error
+    # Two-tailed t-value: for 95% CI, we need t at 0.975 (1 - 0.05/2)
+    alpha = 1 - confidence
+    t_value = t_dist.ppf(1 - alpha / 2, df)
+
+    return t_value * standard_error
+
+
+def is_low_confidence(games_played: int, ci: float = None,
+                      min_games: int = 30, max_ci: float = 100.0) -> bool:
+    """Check if a model's rating has low statistical confidence.
+
+    Args:
+        games_played: Number of games played
+        ci: Pre-computed confidence interval (computed if not provided)
+        min_games: Minimum games threshold (default 30)
+        max_ci: Maximum acceptable CI (default 100)
+
+    Returns:
+        True if confidence is low (should show marker)
+    """
+    if games_played < min_games:
+        return True
+
+    if ci is None:
+        ci = confidence_interval(games_played)
+
+    return ci > max_ci
 
 
 def puzzles_needed_for_confidence(target_margin: float, confidence: float = 0.95) -> int:
     """Calculate number of puzzles needed to achieve target confidence margin.
 
+    Uses an iterative approach since the t-value depends on sample size.
+
     Examples:
-        puzzles_needed_for_confidence(25)  # ~246 puzzles for +-25 at 95%
-        puzzles_needed_for_confidence(100) # ~16 puzzles for +-100 at 95%
+        puzzles_needed_for_confidence(25)  # ~250 puzzles for +-25 at 95%
+        puzzles_needed_for_confidence(100) # ~20 puzzles for +-100 at 95%
 
     Args:
         target_margin: Desired +/- margin
@@ -94,13 +125,20 @@ def puzzles_needed_for_confidence(target_margin: float, confidence: float = 0.95
     Returns:
         Number of puzzles needed
     """
-    z_scores = {0.90: 1.645, 0.95: 1.96, 0.99: 2.576}
-    z = z_scores.get(confidence, 1.96)
     performance_sd = 200.0
 
-    # margin = z * sd / sqrt(n)
-    # n = (z * sd / margin)^2
-    return math.ceil((z * performance_sd / target_margin) ** 2)
+    # Start with z-score estimate as initial guess
+    z_approx = 1.96 if confidence == 0.95 else t_dist.ppf(1 - (1 - confidence) / 2, 1000)
+    n_estimate = math.ceil((z_approx * performance_sd / target_margin) ** 2)
+
+    # Iteratively find exact n using t-distribution
+    for n in range(max(2, n_estimate - 10), n_estimate + 50):
+        ci = confidence_interval(n, confidence)
+        if ci <= target_margin:
+            return n
+
+    # Fallback to z-score estimate if iteration doesn't converge
+    return n_estimate
 
 
 def update_tag_elos(

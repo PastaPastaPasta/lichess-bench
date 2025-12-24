@@ -12,18 +12,10 @@ Usage:
 
 import argparse
 import json
-import math
 from pathlib import Path
 from typing import List, Dict
 
-
-def confidence_interval(games_played: int) -> float:
-    """Calculate the +/- 95% confidence interval for ELO rating."""
-    if games_played == 0:
-        return float('inf')
-    performance_sd = 200.0
-    standard_error = performance_sd / math.sqrt(games_played)
-    return 1.96 * standard_error
+from elo import confidence_interval, is_low_confidence
 
 
 def load_all_states(data_dir: str = "data") -> List[Dict]:
@@ -42,6 +34,7 @@ def load_all_states(data_dir: str = "data") -> List[Dict]:
             wins = state.get("wins", 0)
             ci = confidence_interval(games)
             win_rate = (wins / games * 100) if games > 0 else 0
+            low_conf = is_low_confidence(games, ci)
 
             models.append({
                 "name": model_name,
@@ -49,7 +42,8 @@ def load_all_states(data_dir: str = "data") -> List[Dict]:
                 "games": games,
                 "wins": wins,
                 "ci": ci,
-                "win_rate": win_rate
+                "win_rate": win_rate,
+                "low_confidence": low_conf
             })
         except (json.JSONDecodeError, KeyError) as e:
             print(f"Warning: Could not parse {state_file}: {e}")
@@ -76,12 +70,16 @@ def generate_svg(models: List[Dict], output_path: str = "leaderboard.svg") -> No
         print("No models found to generate table.")
         return
 
+    # Check if any models have low confidence
+    has_low_confidence = any(m.get("low_confidence", False) for m in models)
+    footnote_height = 30 if has_low_confidence else 0
+
     # SVG dimensions
     row_height = 36
     header_height = 44
     padding = 20
     width = 700
-    height = header_height + (len(models) * row_height) + padding
+    height = header_height + (len(models) * row_height) + padding + footnote_height
 
     # Column positions
     col_rank = 25
@@ -110,6 +108,7 @@ def generate_svg(models: List[Dict], output_path: str = "leaderboard.svg") -> No
       .games {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 13px; fill: #495057; }}
       .winrate {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 13px; fill: #198754; }}
       .border {{ stroke: #dee2e6; stroke-width: 1; fill: none; }}
+      .footnote {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 11px; fill: #6c757d; font-style: italic; }}
     </style>
   </defs>
 
@@ -139,6 +138,8 @@ def generate_svg(models: List[Dict], output_path: str = "leaderboard.svg") -> No
 
         # Format values
         display_name = format_model_name(model["name"])
+        if model.get("low_confidence", False):
+            display_name += " †"
         elo_str = f"{model['elo']:.0f}"
         ci_str = f"±{model['ci']:.0f}"
         games_str = str(model["games"])
@@ -153,6 +154,13 @@ def generate_svg(models: List[Dict], output_path: str = "leaderboard.svg") -> No
   <text x="{col_ci}" y="{text_y}" class="ci">{ci_str}</text>
   <text x="{col_games}" y="{text_y}" class="games">{games_str}</text>
   <text x="{col_winrate}" y="{text_y}" class="winrate">{winrate_str}</text>''')
+
+    # Add footnote if any models have low confidence
+    if has_low_confidence:
+        footnote_y = header_height + (len(models) * row_height) + 20
+        svg_parts.append(f'''
+  <!-- Footnote -->
+  <text x="{col_model}" y="{footnote_y}" class="footnote">† Low confidence: fewer than 30 games or 95% CI exceeds ±100 ELO</text>''')
 
     svg_parts.append("\n</svg>")
 

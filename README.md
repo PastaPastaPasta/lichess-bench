@@ -93,8 +93,20 @@ The benchmark expects the puzzle file at `puzzles/lichess_db_puzzle.csv` by defa
 Based on Elo's empirical finding that individual game performance has a standard deviation of ~200 rating points:
 
 - Standard Error = 200 / sqrt(n)
-- 95% CI = 1.96 * SE
-- Example: 250 puzzles yields approximately +/- 25 ELO margin
+- Uses **t-distribution** (not z-scores) for statistical correctness at small sample sizes
+- For 95% CI: margin = t(df=n-1, 0.975) × SE
+- The t-distribution converges to normal as n→∞, so this works for all sample sizes
+- Example: 250 puzzles yields approximately ±25 ELO margin
+
+| Games | t-value (95%) | CI (±ELO) |
+|-------|---------------|-----------|
+| 3     | 4.303         | ±497      |
+| 10    | 2.262         | ±143      |
+| 30    | 2.045         | ±75       |
+| 100   | 1.984         | ±40       |
+| 250   | 1.970         | ±25       |
+
+**Low Confidence Marker (†):** Models with fewer than 30 games or a 95% CI exceeding ±100 ELO are marked with a dagger (†) in the leaderboard to indicate lower statistical confidence in their ranking.
 
 ### Puzzle Selection
 
