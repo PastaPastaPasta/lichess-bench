@@ -21,10 +21,22 @@ class TurnTrace:
     reasoning: Optional[str] = None            # OpenAI o1/o3: message.reasoning
     reasoning_details: Optional[List[Dict]] = None  # OpenRouter structured reasoning
 
+    # XML parsing results
+    xml_state_summary: Optional[str] = None
+    xml_potentials: Optional[str] = None
+    xml_forced_line: Optional[str] = None
+    xml_single_move: Optional[str] = None
+    xml_parse_success: bool = False
+    xml_parse_error: Optional[str] = None
+
     # Extracted data
-    extracted_move: str = ""                   # UCI move extracted via regex
+    extracted_move: str = ""                   # UCI move extracted from XML
     expected_move: str = ""                    # Correct move for this turn
     move_correct: bool = False
+
+    # Validity tracking (XML format + legal chess moves)
+    response_valid: bool = False               # True if XML valid AND all moves are legal chess
+    validity_error: Optional[str] = None       # Description of what made it invalid
 
     # Response metadata
     finish_reason: Optional[str] = None
@@ -61,6 +73,16 @@ class PuzzleTrace:
     moves_correct: int
     moves_total: int
     error: Optional[str] = None
+
+    # First-shot / forced line results
+    first_shot_attempted: bool = False         # Did model provide forced line on turn 1?
+    first_shot_success: bool = False           # Did it match entire remaining puzzle?
+    first_shot_moves: Optional[List[str]] = None  # Moves attempted in forced line
+
+    # Valid response tracking (all turns had valid XML + legal moves)
+    all_responses_valid: bool = False          # True if ALL turns had valid responses
+    first_invalid_turn: Optional[int] = None   # Which turn first had invalid response (1-indexed)
+    validity_error: Optional[str] = None       # First validity error encountered
 
     # Turn-by-turn traces
     turns: List[Dict] = field(default_factory=list)  # Serialized TurnTrace objects

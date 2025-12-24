@@ -21,6 +21,16 @@ class BenchmarkState:
     games_played: int = 0
     wins: int = 0
 
+    # First-shot ELO tracking (success = complete forcing line on first response)
+    first_shot_elo: float = 1500.0
+    first_shot_games: int = 0
+    first_shot_wins: int = 0
+
+    # Valid response ELO tracking (success = valid XML + all legal chess moves)
+    valid_response_elo: float = 1500.0
+    valid_response_games: int = 0
+    valid_response_wins: int = 0
+
     # Per-tag tracking
     tag_ratings: Dict[str, float] = field(default_factory=dict)
     tag_games: Dict[str, int] = field(default_factory=dict)
@@ -58,6 +68,20 @@ def load_state(model: str, data_dir: str = "data") -> Optional[BenchmarkState]:
 
     with open(path, 'r') as f:
         data = json.load(f)
+
+    # Backwards compatibility: add default values for new fields
+    if 'first_shot_elo' not in data:
+        data['first_shot_elo'] = 1500.0
+    if 'first_shot_games' not in data:
+        data['first_shot_games'] = 0
+    if 'first_shot_wins' not in data:
+        data['first_shot_wins'] = 0
+    if 'valid_response_elo' not in data:
+        data['valid_response_elo'] = 1500.0
+    if 'valid_response_games' not in data:
+        data['valid_response_games'] = 0
+    if 'valid_response_wins' not in data:
+        data['valid_response_wins'] = 0
 
     return BenchmarkState(**data)
 
