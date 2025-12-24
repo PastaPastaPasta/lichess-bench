@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="700" height="352" viewBox="0 0 700 352">
+  <defs>
+    <style>
+      .bg { fill: #ffffff; }
+      .header-bg { fill: #1a1a2e; }
+      .row-even { fill: #f8f9fa; }
+      .row-odd { fill: #ffffff; }
+      .header-text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 13px; font-weight: 600; fill: #ffffff; }
+      .rank { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 14px; font-weight: 700; fill: #6c757d; }
+      .rank-top { fill: #ffc107; }
+      .model { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 14px; font-weight: 500; fill: #212529; }
+      .elo { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 14px; font-weight: 700; fill: #0d6efd; }
+      .ci { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 12px; fill: #6c757d; }
+      .games { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 13px; fill: #495057; }
+      .winrate { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif; font-size: 13px; fill: #198754; }
+      .border { stroke: #dee2e6; stroke-width: 1; fill: none; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect class="bg" width="700" height="352" rx="8"/>
+  <rect class="border" x="0.5" y="0.5" width="699" height="351" rx="8"/>
+
+  <!-- Header -->
+  <rect class="header-bg" width="700" height="44" rx="8"/>
+  <rect class="header-bg" y="8" width="700" height="36"/>
+
+  <text x="25" y="27.0" class="header-text">#</text>
+  <text x="70" y="27.0" class="header-text">Model</text>
+  <text x="380" y="27.0" class="header-text">ELO</text>
+  <text x="460" y="27.0" class="header-text">95% CI</text>
+  <text x="560" y="27.0" class="header-text">Games</text>
+  <text x="640" y="27.0" class="header-text">Win%</text>
+
+  <!-- Row 1 -->
+  <rect class="row-even" y="44" width="700" height="36"/>
+  <text x="25" y="67.0" class="rank rank-top">1</text>
+  <text x="70" y="67.0" class="model">Gpt 5</text>
+  <text x="380" y="67.0" class="elo">1835</text>
+  <text x="460" y="67.0" class="ci">±31</text>
+  <text x="560" y="67.0" class="games">157</text>
+  <text x="640" y="67.0" class="winrate">59.9%</text>
+  <!-- Row 2 -->
+  <rect class="row-odd" y="80" width="700" height="36"/>
+  <text x="25" y="103.0" class="rank rank-top">2</text>
+  <text x="70" y="103.0" class="model">Gpt 5.1</text>
+  <text x="380" y="103.0" class="elo">1636</text>
+  <text x="460" y="103.0" class="ci">±78</text>
+  <text x="560" y="103.0" class="games">25</text>
+  <text x="640" y="103.0" class="winrate">64.0%</text>
+  <!-- Row 3 -->
+  <rect class="row-even" y="116" width="700" height="36"/>
+  <text x="25" y="139.0" class="rank rank-top">3</text>
+  <text x="70" y="139.0" class="model">Gpt 5.2</text>
+  <text x="380" y="139.0" class="elo">1530</text>
+  <text x="460" y="139.0" class="ci">±66</text>
+  <text x="560" y="139.0" class="games">35</text>
+  <text x="640" y="139.0" class="winrate">51.4%</text>
+  <!-- Row 4 -->
+  <rect class="row-odd" y="152" width="700" height="36"/>
+  <text x="25" y="175.0" class="rank">4</text>
+  <text x="70" y="175.0" class="model">Kimi K2 Thinking</text>
+  <text x="380" y="175.0" class="elo">1430</text>
+  <text x="460" y="175.0" class="ci">±226</text>
+  <text x="560" y="175.0" class="games">3</text>
+  <text x="640" y="175.0" class="winrate">0.0%</text>
+  <!-- Row 5 -->
+  <rect class="row-even" y="188" width="700" height="36"/>
+  <text x="25" y="211.0" class="rank">5</text>
+  <text x="70" y="211.0" class="model">Grok 4.1 Fast</text>
+  <text x="380" y="211.0" class="elo">1359</text>
+  <text x="460" y="211.0" class="ci">±25</text>
+  <text x="560" y="211.0" class="games">246</text>
+  <text x="640" y="211.0" class="winrate">52.4%</text>
+  <!-- Row 6 -->
+  <rect class="row-odd" y="224" width="700" height="36"/>
+  <text x="25" y="247.0" class="rank">6</text>
+  <text x="70" y="247.0" class="model">Gemini 3 Flash Preview</text>
+  <text x="380" y="247.0" class="elo">1268</text>
+  <text x="460" y="247.0" class="ci">±25</text>
+  <text x="560" y="247.0" class="games">250</text>
+  <text x="640" y="247.0" class="winrate">45.2%</text>
+  <!-- Row 7 -->
+  <rect class="row-even" y="260" width="700" height="36"/>
+  <text x="25" y="283.0" class="rank">7</text>
+  <text x="70" y="283.0" class="model">Gpt Oss 120B</text>
+  <text x="380" y="283.0" class="elo">900</text>
+  <text x="460" y="283.0" class="ci">±25</text>
+  <text x="560" y="283.0" class="games">250</text>
+  <text x="640" y="283.0" class="winrate">39.2%</text>
+  <!-- Row 8 -->
+  <rect class="row-odd" y="296" width="700" height="36"/>
+  <text x="25" y="319.0" class="rank">8</text>
+  <text x="70" y="319.0" class="model">Gpt 4.1</text>
+  <text x="380" y="319.0" class="elo">500</text>
+  <text x="460" y="319.0" class="ci">±32</text>
+  <text x="560" y="319.0" class="games">152</text>
+  <text x="640" y="319.0" class="winrate">4.6%</text>
+</svg>
