@@ -19,8 +19,8 @@ This benchmark evaluates LLMs on [Lichess](https://lichess.org) chess puzzles:
 ## Installation
 
 ```bash
-git clone https://github.com/pasta/llm-chess-benchmark
-cd llm-chess-benchmark
+git clone https://github.com/PastaPastaPasta/lichess-bench.git
+cd lichess-bench
 pip install -r requirements.txt
 ```
 
@@ -70,13 +70,15 @@ This reads all state files from `data/` and generates `leaderboard.svg`.
 
 This benchmark uses the [Lichess puzzle database](https://database.lichess.org/#puzzles).
 
-Download and extract:
+Download and extract to the `puzzles/` directory:
 ```bash
+mkdir -p puzzles
 curl -O https://database.lichess.org/lichess_db_puzzle.csv.zst
-zstd -d lichess_db_puzzle.csv.zst
+zstd -d lichess_db_puzzle.csv.zst -o puzzles/lichess_db_puzzle.csv
+rm lichess_db_puzzle.csv.zst
 ```
 
-Then update the `--puzzle-csv` path or modify `DEFAULT_PUZZLE_CSV` in `benchmark.py`.
+The benchmark expects the puzzle file at `puzzles/lichess_db_puzzle.csv` by default.
 
 ## Methodology
 
@@ -108,11 +110,15 @@ llm-chess-benchmark/
 ├── elo.py             # ELO calculations
 ├── puzzles.py         # Puzzle loading/selection
 ├── state.py           # State persistence
+├── traces.py          # Response/thinking trace capture
 ├── generate_table.py  # Leaderboard SVG generator
 ├── leaderboard.svg    # Generated leaderboard image
 ├── requirements.txt   # Python dependencies
-├── data/              # Model state files (JSON)
-│   └── *_state.json
+├── puzzles/           # Lichess puzzle database
+│   └── lichess_db_puzzle.csv
+├── data/              # Model state and trace files
+│   ├── *_state.json   # ELO ratings and results
+│   └── *_traces.jsonl # Full model responses and thinking tokens
 └── README.md
 ```
 

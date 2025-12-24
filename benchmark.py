@@ -31,7 +31,7 @@ from datetime import datetime
 
 # Configuration
 OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
-DEFAULT_PUZZLE_CSV = "/Users/pasta/workspace/llm-reasoning-chess/lichess_data/lichess_db_puzzle.csv"
+DEFAULT_PUZZLE_CSV = "puzzles/lichess_db_puzzle.csv"
 RATING_WINDOW = 100  # Select puzzles within +/-100 of model's current rating
 INITIAL_ELO = 1500.0
 SAVE_INTERVAL = 10  # Save state every N puzzles
