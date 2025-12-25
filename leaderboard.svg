@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="700" height="562" viewBox="0 0 700 562">
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="238" viewBox="0 0 1050 238">
   <defs>
     <style>
       .bg { fill: #ffffff; }
@@ -19,124 +19,77 @@
   </defs>
 
   <!-- Background -->
-  <rect class="bg" width="700" height="562" rx="8"/>
-  <rect class="border" x="0.5" y="0.5" width="699" height="561" rx="8"/>
+  <rect class="bg" width="1050" height="238" rx="8"/>
+  <rect class="border" x="0.5" y="0.5" width="1049" height="237" rx="8"/>
 
   <!-- Header -->
-  <rect class="header-bg" width="700" height="44" rx="8"/>
-  <rect class="header-bg" y="8" width="700" height="36"/>
+  <rect class="header-bg" width="1050" height="44" rx="8"/>
+  <rect class="header-bg" y="8" width="1050" height="36"/>
 
-  <text x="25" y="27.0" class="header-text">#</text>
-  <text x="70" y="27.0" class="header-text">Model</text>
-  <text x="380" y="27.0" class="header-text">ELO</text>
-  <text x="460" y="27.0" class="header-text">95% CI</text>
-  <text x="560" y="27.0" class="header-text">Games</text>
-  <text x="640" y="27.0" class="header-text">Win%</text>
+  <text x="20" y="27.0" class="header-text">#</text>
+  <text x="55" y="27.0" class="header-text">Model</text>
+  <text x="280" y="27.0" class="header-text">ELO</text>
+  <text x="340" y="27.0" class="header-text">CI</text>
+  <text x="400" y="27.0" class="header-text">1st-Shot</text>
+  <text x="460" y="27.0" class="header-text">1S CI</text>
+  <text x="520" y="27.0" class="header-text">Valid</text>
+  <text x="580" y="27.0" class="header-text">V%</text>
+  <text x="650" y="27.0" class="header-text">Games</text>
+  <text x="720" y="27.0" class="header-text">Win%</text>
+  <text x="790" y="27.0" class="header-text">1S%</text>
 
   <!-- Row 1 -->
-  <rect class="row-even" y="44" width="700" height="36"/>
-  <text x="25" y="67.0" class="rank rank-top">1</text>
-  <text x="70" y="67.0" class="model">Gpt 5</text>
-  <text x="380" y="67.0" class="elo">1830</text>
-  <text x="460" y="67.0" class="ci">±31</text>
-  <text x="560" y="67.0" class="games">163</text>
-  <text x="640" y="67.0" class="winrate">59.5%</text>
+  <rect class="row-even" y="44" width="1050" height="36"/>
+  <text x="20" y="67.0" class="rank rank-top">1</text>
+  <text x="55" y="67.0" class="model">Kimi K2 Thinking †</text>
+  <text x="280" y="67.0" class="elo">1500</text>
+  <text x="340" y="67.0" class="ci">±inf</text>
+  <text x="400" y="67.0" class="elo">1500</text>
+  <text x="460" y="67.0" class="ci">-</text>
+  <text x="520" y="67.0" class="elo">1500</text>
+  <text x="580" y="67.0" class="winrate">0.0%</text>
+  <text x="650" y="67.0" class="games">0</text>
+  <text x="720" y="67.0" class="winrate">0.0%</text>
+  <text x="790" y="67.0" class="winrate">0.0%</text>
   <!-- Row 2 -->
-  <rect class="row-odd" y="80" width="700" height="36"/>
-  <text x="25" y="103.0" class="rank rank-top">2</text>
-  <text x="70" y="103.0" class="model">Gpt 5.1</text>
-  <text x="380" y="103.0" class="elo">1659</text>
-  <text x="460" y="103.0" class="ci">±71</text>
-  <text x="560" y="103.0" class="games">33</text>
-  <text x="640" y="103.0" class="winrate">63.6%</text>
+  <rect class="row-odd" y="80" width="1050" height="36"/>
+  <text x="20" y="103.0" class="rank rank-top">2</text>
+  <text x="55" y="103.0" class="model">Gemini 3 Flash Preview</text>
+  <text x="280" y="103.0" class="elo">1177</text>
+  <text x="340" y="103.0" class="ci">±25</text>
+  <text x="400" y="103.0" class="elo">1082</text>
+  <text x="460" y="103.0" class="ci">±25</text>
+  <text x="520" y="103.0" class="elo">1193</text>
+  <text x="580" y="103.0" class="winrate">47.2%</text>
+  <text x="650" y="103.0" class="games">250</text>
+  <text x="720" y="103.0" class="winrate">44.4%</text>
+  <text x="790" y="103.0" class="winrate">31.2%</text>
   <!-- Row 3 -->
-  <rect class="row-even" y="116" width="700" height="36"/>
-  <text x="25" y="139.0" class="rank rank-top">3</text>
-  <text x="70" y="139.0" class="model">Gpt 5.2</text>
-  <text x="380" y="139.0" class="elo">1530</text>
-  <text x="460" y="139.0" class="ci">±69</text>
-  <text x="560" y="139.0" class="games">35</text>
-  <text x="640" y="139.0" class="winrate">51.4%</text>
+  <rect class="row-even" y="116" width="1050" height="36"/>
+  <text x="20" y="139.0" class="rank rank-top">3</text>
+  <text x="55" y="139.0" class="model">Gpt Oss 120B</text>
+  <text x="280" y="139.0" class="elo">902</text>
+  <text x="340" y="139.0" class="ci">±25</text>
+  <text x="400" y="139.0" class="elo">833</text>
+  <text x="460" y="139.0" class="ci">±25</text>
+  <text x="520" y="139.0" class="elo">1073</text>
+  <text x="580" y="139.0" class="winrate">66.0%</text>
+  <text x="650" y="139.0" class="games">250</text>
+  <text x="720" y="139.0" class="winrate">40.4%</text>
+  <text x="790" y="139.0" class="winrate">31.2%</text>
   <!-- Row 4 -->
-  <rect class="row-odd" y="152" width="700" height="36"/>
-  <text x="25" y="175.0" class="rank">4</text>
-  <text x="70" y="175.0" class="model">Glm 4.7 †</text>
-  <text x="380" y="175.0" class="elo">1476</text>
-  <text x="460" y="175.0" class="ci">±inf</text>
-  <text x="560" y="175.0" class="games">1</text>
-  <text x="640" y="175.0" class="winrate">0.0%</text>
-  <!-- Row 5 -->
-  <rect class="row-even" y="188" width="700" height="36"/>
-  <text x="25" y="211.0" class="rank">5</text>
-  <text x="70" y="211.0" class="model">Kimi K2 Thinking †</text>
-  <text x="380" y="211.0" class="elo">1430</text>
-  <text x="460" y="211.0" class="ci">±497</text>
-  <text x="560" y="211.0" class="games">3</text>
-  <text x="640" y="211.0" class="winrate">0.0%</text>
-  <!-- Row 6 -->
-  <rect class="row-odd" y="224" width="700" height="36"/>
-  <text x="25" y="247.0" class="rank">6</text>
-  <text x="70" y="247.0" class="model">Minimax M2.1 †</text>
-  <text x="380" y="247.0" class="elo">1387</text>
-  <text x="460" y="247.0" class="ci">±248</text>
-  <text x="560" y="247.0" class="games">5</text>
-  <text x="640" y="247.0" class="winrate">0.0%</text>
-  <!-- Row 7 -->
-  <rect class="row-even" y="260" width="700" height="36"/>
-  <text x="25" y="283.0" class="rank">7</text>
-  <text x="70" y="283.0" class="model">Grok 4.1 Fast</text>
-  <text x="380" y="283.0" class="elo">1359</text>
-  <text x="460" y="283.0" class="ci">±25</text>
-  <text x="560" y="283.0" class="games">246</text>
-  <text x="640" y="283.0" class="winrate">52.4%</text>
-  <!-- Row 8 -->
-  <rect class="row-odd" y="296" width="700" height="36"/>
-  <text x="25" y="319.0" class="rank">8</text>
-  <text x="70" y="319.0" class="model">Gemini 3 Flash Preview</text>
-  <text x="380" y="319.0" class="elo">1268</text>
-  <text x="460" y="319.0" class="ci">±25</text>
-  <text x="560" y="319.0" class="games">250</text>
-  <text x="640" y="319.0" class="winrate">45.2%</text>
-  <!-- Row 9 -->
-  <rect class="row-even" y="332" width="700" height="36"/>
-  <text x="25" y="355.0" class="rank">9</text>
-  <text x="70" y="355.0" class="model">Gpt Oss 120B</text>
-  <text x="380" y="355.0" class="elo">900</text>
-  <text x="460" y="355.0" class="ci">±25</text>
-  <text x="560" y="355.0" class="games">250</text>
-  <text x="640" y="355.0" class="winrate">39.2%</text>
-  <!-- Row 10 -->
-  <rect class="row-odd" y="368" width="700" height="36"/>
-  <text x="25" y="391.0" class="rank">10</text>
-  <text x="70" y="391.0" class="model">Qwen3 Max</text>
-  <text x="380" y="391.0" class="elo">546</text>
-  <text x="460" y="391.0" class="ci">±25</text>
-  <text x="560" y="391.0" class="games">250</text>
-  <text x="640" y="391.0" class="winrate">13.2%</text>
-  <!-- Row 11 -->
-  <rect class="row-even" y="404" width="700" height="36"/>
-  <text x="25" y="427.0" class="rank">11</text>
-  <text x="70" y="427.0" class="model">Gpt 4.1</text>
-  <text x="380" y="427.0" class="elo">500</text>
-  <text x="460" y="427.0" class="ci">±32</text>
-  <text x="560" y="427.0" class="games">152</text>
-  <text x="640" y="427.0" class="winrate">4.6%</text>
-  <!-- Row 12 -->
-  <rect class="row-odd" y="440" width="700" height="36"/>
-  <text x="25" y="463.0" class="rank">12</text>
-  <text x="70" y="463.0" class="model">Claude Haiku 4.5</text>
-  <text x="380" y="463.0" class="elo">500</text>
-  <text x="460" y="463.0" class="ci">±36</text>
-  <text x="560" y="463.0" class="games">118</text>
-  <text x="640" y="463.0" class="winrate">1.7%</text>
-  <!-- Row 13 -->
-  <rect class="row-even" y="476" width="700" height="36"/>
-  <text x="25" y="499.0" class="rank">13</text>
-  <text x="70" y="499.0" class="model">Kimi K2 0905</text>
-  <text x="380" y="499.0" class="elo">499</text>
-  <text x="460" y="499.0" class="ci">±27</text>
-  <text x="560" y="499.0" class="games">215</text>
-  <text x="640" y="499.0" class="winrate">7.4%</text>
+  <rect class="row-odd" y="152" width="1050" height="36"/>
+  <text x="20" y="175.0" class="rank">4</text>
+  <text x="55" y="175.0" class="model">Kimi K2 0905</text>
+  <text x="280" y="175.0" class="elo">500</text>
+  <text x="340" y="175.0" class="ci">±38</text>
+  <text x="400" y="175.0" class="elo">500</text>
+  <text x="460" y="175.0" class="ci">±38</text>
+  <text x="520" y="175.0" class="elo">509</text>
+  <text x="580" y="175.0" class="winrate">1.9%</text>
+  <text x="650" y="175.0" class="games">107</text>
+  <text x="720" y="175.0" class="winrate">0.0%</text>
+  <text x="790" y="175.0" class="winrate">0.0%</text>
   <!-- Footnote -->
-  <text x="70" y="532" class="footnote">† Low confidence: fewer than 30 games or 95% CI exceeds ±100 ELO</text>
+  <text x="55" y="208" class="footnote">† Low confidence: fewer than 30 games or 95% CI exceeds ±100 ELO</text>
 </svg>
