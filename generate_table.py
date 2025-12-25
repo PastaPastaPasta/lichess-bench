@@ -82,12 +82,23 @@ def load_all_states(data_dir: str = "data") -> List[Dict]:
 
 def format_model_name(model: str) -> str:
     """Clean up model names for display."""
+    # Extract reasoning level if present
+    reasoning = None
+    if ":reasoning=" in model:
+        model, reasoning = model.rsplit(":reasoning=", 1)
+
     # Remove provider prefix
     if "/" in model:
         model = model.split("/", 1)[1]
 
     # Capitalize and clean up
-    return model.replace("-", " ").replace("_", " ").title()
+    display = model.replace("-", " ").replace("_", " ").title()
+
+    # Append reasoning level
+    if reasoning:
+        display += f" ({reasoning.upper()})"
+
+    return display
 
 
 def generate_svg(models: List[Dict], output_path: str = "leaderboard.svg") -> None:

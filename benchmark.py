@@ -9,6 +9,7 @@ Usage:
     python benchmark.py --model anthropic/claude-3.5-sonnet
     python benchmark.py --model openai/gpt-4 --puzzles 500
     python benchmark.py --model anthropic/claude-3.5-sonnet --resume
+    python benchmark.py --model openai/o3-mini --reasoning high
 """
 
 import argparse
@@ -298,7 +299,8 @@ def evaluate_puzzle(
     client: OpenAI,
     model: str,
     puzzle: Dict,
-    verbose: bool = False
+    verbose: bool = False,
+    reasoning_effort: Optional[str] = None
 ) -> Dict:
     """Evaluate a single puzzle using multi-turn conversation.
 
@@ -309,6 +311,7 @@ def evaluate_puzzle(
         model: Model identifier
         puzzle: Puzzle dict with fen, moves, rating, themes
         verbose: Print conversation details
+        reasoning_effort: Optional reasoning level (xhigh, high, medium, low, minimal, none)
 
     Returns:
         Result dict with:
@@ -400,12 +403,18 @@ def evaluate_puzzle(
 
         # Get model's response
         try:
-            response = client.chat.completions.create(
-                model=model,
-                messages=messages,
-                max_tokens=65536,  # Allow for long chain-of-thought reasoning
-                temperature=0
-            )
+            # Build API kwargs
+            api_kwargs = {
+                "model": model,
+                "messages": messages,
+                "max_tokens": 65536,  # Allow for long chain-of-thought reasoning
+                "temperature": 0
+            }
+            # Add reasoning effort if specified
+            if reasoning_effort:
+                api_kwargs["extra_body"] = {"reasoning": {"effort": reasoning_effort}}
+
+            response = client.chat.completions.create(**api_kwargs)
             # Check if we got a valid response
             if not response.choices:
                 if verbose:
@@ -788,6 +797,12 @@ Examples:
         "--seed", type=int, default=42,
         help="Random seed for reproducibility (default: 42)"
     )
+    parser.add_argument(
+        "--reasoning",
+        choices=["xhigh", "high", "medium", "low", "minimal", "none"],
+        default=None,
+        help="Reasoning effort level for supported models (e.g., o3, Claude thinking)"
+    )
     args = parser.parse_args()
 
     # Get API key
@@ -799,12 +814,17 @@ Examples:
     # Initialize OpenAI client for OpenRouter
     client = OpenAI(api_key=api_key, base_url=OPENROUTER_BASE_URL)
 
+    # Create storage model name (includes reasoning level if specified)
+    storage_model = args.model
+    if args.reasoning:
+        storage_model = f"{args.model}:reasoning={args.reasoning}"
+
     # Load or create state
     if args.resume:
-        state = load_state(args.model, args.data_dir)
+        state = load_state(storage_model, args.data_dir)
         if state is None:
-            print(f"No saved state found for {args.model}, starting fresh")
-            state = create_new_state(args.model, INITIAL_ELO, args.seed)
+            print(f"No saved state found for {storage_model}, starting fresh")
+            state = create_new_state(storage_model, INITIAL_ELO, args.seed)
             random.seed(args.seed)
         else:
             print(f"Resuming from {state.games_played} puzzles, ELO: {state.elo_rating:.0f}")
@@ -813,7 +833,7 @@ Examples:
             for _ in range(state.games_played):
                 random.random()  # Advance RNG to maintain puzzle sequence
     else:
-        state = create_new_state(args.model, INITIAL_ELO, args.seed)
+        state = create_new_state(storage_model, INITIAL_ELO, args.seed)
         random.seed(args.seed)
 
     # Load puzzles
@@ -829,7 +849,7 @@ Examples:
     target_puzzles = max(args.puzzles, puzzles_for_ci)
     remaining = target_puzzles - state.games_played
 
-    print(f"\nModel: {args.model}")
+    print(f"\nModel: {storage_model}")
     print(f"Seed: {state.seed}")
     print(f"Target: {target_puzzles} puzzles (for +-{args.target_ci} CI at 95%)")
     print(f"Starting ELO: {state.elo_rating:.0f}")
@@ -861,7 +881,7 @@ Examples:
                 break
 
             # Evaluate puzzle
-            result = evaluate_puzzle(client, args.model, puzzle, args.verbose)
+            result = evaluate_puzzle(client, args.model, puzzle, args.verbose, args.reasoning)
 
             # Save trace immediately after each puzzle
             if 'trace' in result and result['trace'] is not None:
